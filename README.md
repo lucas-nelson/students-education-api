@@ -14,6 +14,7 @@ Each lesson has 3 parts - 1, 2 and 3. There are 100 lessons in total.
 Generate a rails app that persists students and their progress.
 
 Define routes for:
+
 1.  setting a student's progress - progress should consist of a lesson and part number.
 2.  returning a JSON representation of a student and their associated progress.
 
