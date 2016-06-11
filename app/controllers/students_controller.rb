@@ -41,6 +41,6 @@ class StudentsController < ApplicationController
     def student_params
       params.require(:data)
             .require(:attributes)
-            .permit(:name, :email)
+            .permit(:email, :name)
     end
 end
