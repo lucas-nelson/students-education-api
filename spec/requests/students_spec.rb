@@ -40,16 +40,16 @@ RSpec.describe 'Students', type: :request do
 
       expect do
         post students_path, params: student.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }
+
+        expect(response).to have_http_status(:created)
+        expect(response.headers['Location']).to eq student_url(Student.last)
+
+        body = JSON.parse(response.body)
+        attributes = body.fetch('data').fetch('attributes')
+
+        expect(attributes.fetch('email')).to eq 'sansa@hotmail.com'
+        expect(attributes.fetch('name')).to eq 'Sansa Stark'
       end.to change(Student, :count).by 1
-
-      expect(response).to have_http_status(:created)
-      expect(response.headers['Location']).to eq student_url(Student.last)
-
-      body = JSON.parse(response.body)
-      attributes = body.fetch('data').fetch('attributes')
-
-      expect(attributes.fetch('email')).to eq 'sansa@hotmail.com'
-      expect(attributes.fetch('name')).to eq 'Sansa Stark'
     end
 
     it 'fails to create the specific student with missing data' do
@@ -57,19 +57,19 @@ RSpec.describe 'Students', type: :request do
 
       expect do
         post students_path, params: student.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }
+
+        body = JSON.parse(response.body)
+        errors = body.fetch('errors')
+        errors = errors.sort_by { |error| [error.dig('source', 'pointer'), error['detail']] }
+
+        expected = [
+          { 'source' => { 'pointer' => '/data/attributes/email' }, 'detail' => "can't be blank" },
+          { 'source' => { 'pointer' => '/data/attributes/email' }, 'detail' => 'is invalid' },
+          { 'source' => { 'pointer' => '/data/attributes/name' },  'detail' => "can't be blank" }
+        ]
+
+        expect(errors).to eql(expected)
       end.not_to change(Student, :count)
-
-      body = JSON.parse(response.body)
-      errors = body.fetch('errors')
-      errors = errors.sort_by { |error| [error.dig('source', 'pointer'), error['detail']] }
-
-      expected = [
-        { 'source' => { 'pointer' => '/data/attributes/email' }, 'detail' => "can't be blank" },
-        { 'source' => { 'pointer' => '/data/attributes/email' }, 'detail' => 'is invalid' },
-        { 'source' => { 'pointer' => '/data/attributes/name' },  'detail' => "can't be blank" }
-      ]
-
-      expect(errors).to eql(expected)
     end
   end
 
@@ -97,9 +97,9 @@ RSpec.describe 'Students', type: :request do
 
       expect do
         delete student_path(student)
-      end.to change(Student, :count).by(-1)
 
-      expect(response).to have_http_status(:no_content)
+        expect(response).to have_http_status(:no_content)
+      end.to change(Student, :count).by(-1)
     end
   end
 end

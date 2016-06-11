@@ -41,16 +41,16 @@ RSpec.describe 'LessonPartParts', type: :request do
 
       expect do
         post lesson_parts_path, params: lesson_part.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }
+
+        expect(response).to have_http_status(:created)
+        expect(response.headers['Location']).to eq lesson_part_url(LessonPart.last)
+
+        body = JSON.parse(response.body)
+        attributes = body.fetch('data').fetch('attributes')
+
+        expect(attributes.fetch('name')).to eq "don't upset the queen!"
+        expect(attributes.fetch('ordinal')).to eq 2
       end.to change(LessonPart, :count).by 1
-
-      expect(response).to have_http_status(:created)
-      expect(response.headers['Location']).to eq lesson_part_url(LessonPart.last)
-
-      body = JSON.parse(response.body)
-      attributes = body.fetch('data').fetch('attributes')
-
-      expect(attributes.fetch('name')).to eq "don't upset the queen!"
-      expect(attributes.fetch('ordinal')).to eq 2
     end
 
     it 'fails to create the specific lesson_part with missing data' do
@@ -58,19 +58,19 @@ RSpec.describe 'LessonPartParts', type: :request do
 
       expect do
         post lesson_parts_path, params: lesson_part.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }
+
+        body = JSON.parse(response.body)
+        errors = body.fetch('errors')
+        errors = errors.sort_by { |error| [error.dig('source', 'pointer'), error['detail']] }
+
+        expected = [
+          { 'source' => { 'pointer' => '/data/attributes/name' },    'detail' => "can't be blank" },
+          { 'source' => { 'pointer' => '/data/attributes/ordinal' }, 'detail' => "can't be blank" },
+          { 'source' => { 'pointer' => '/data/attributes/ordinal' }, 'detail' => 'is not a number' }
+        ]
+
+        expect(errors).to eql(expected)
       end.not_to change(LessonPart, :count)
-
-      body = JSON.parse(response.body)
-      errors = body.fetch('errors')
-      errors = errors.sort_by { |error| [error.dig('source', 'pointer'), error['detail']] }
-
-      expected = [
-        { 'source' => { 'pointer' => '/data/attributes/name' },    'detail' => "can't be blank" },
-        { 'source' => { 'pointer' => '/data/attributes/ordinal' }, 'detail' => "can't be blank" },
-        { 'source' => { 'pointer' => '/data/attributes/ordinal' }, 'detail' => 'is not a number' }
-      ]
-
-      expect(errors).to eql(expected)
     end
   end
 
@@ -102,9 +102,9 @@ RSpec.describe 'LessonPartParts', type: :request do
 
       expect do
         delete lesson_part_path(lesson_part)
-      end.to change(LessonPart, :count).by(-1)
 
-      expect(response).to have_http_status(:no_content)
+        expect(response).to have_http_status(:no_content)
+      end.to change(LessonPart, :count).by(-1)
     end
   end
 end
