@@ -94,13 +94,23 @@ RSpec.describe 'Lessons', type: :request do
   # destroy
   describe 'DELETE /lesson/:id' do
     it 'deletes the specified lesson' do
+      lesson = FactoryGirl.create :lesson
+
+      expect do
+        delete lesson_path(lesson)
+
+        expect(response).to have_http_status(:no_content)
+      end.to change(Lesson, :count).by(-1)
+    end
+
+    it 'deletes lesson parts too' do
       lesson = FactoryGirl.create :lesson, :with_lesson_parts
 
       expect do
         delete lesson_path(lesson)
 
         expect(response).to have_http_status(:no_content)
-      end.to change(Lesson, :count).by(-1).and change(LessonPart, :count).by(-3)
+      end.to change(LessonPart, :count).by(-3)
     end
   end
 end

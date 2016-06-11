@@ -109,7 +109,7 @@ RSpec.describe 'Students', type: :request do
         delete student_path(student)
 
         expect(response).to have_http_status(:no_content)
-      end.to change(CompletedLessonPart, :count).by(-1)
+      end.to change(CompletedLessonPart, :count).by(-3)
     end
   end
 end
