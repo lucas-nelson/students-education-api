@@ -36,7 +36,9 @@ RSpec.describe 'LessonPartParts', type: :request do
   # create
   describe 'POST /lesson_parts' do
     it 'creates the specified lesson_part' do
-      lesson_part = { data: { type: 'lesson_parts', attributes: { name: "don't upset the queen!",
+      lesson = FactoryGirl.create :lesson
+      lesson_part = { data: { type: 'lesson_parts', attributes: { lesson_id: lesson.id,
+                                                                  name: "don't upset the queen!",
                                                                   ordinal: 2 } } }
 
       expect do
@@ -48,6 +50,7 @@ RSpec.describe 'LessonPartParts', type: :request do
         body = JSON.parse(response.body)
         attributes = body.fetch('data').fetch('attributes')
 
+        expect(attributes.fetch('lesson-id')).to eq lesson.id
         expect(attributes.fetch('name')).to eq "don't upset the queen!"
         expect(attributes.fetch('ordinal')).to eq 2
       end.to change(LessonPart, :count).by 1
@@ -64,6 +67,7 @@ RSpec.describe 'LessonPartParts', type: :request do
         errors = errors.sort_by { |error| [error.dig('source', 'pointer'), error['detail']] }
 
         expected = [
+          { 'source' => { 'pointer' => '/data/attributes/lesson' },  'detail' => 'must exist' },
           { 'source' => { 'pointer' => '/data/attributes/name' },    'detail' => "can't be blank" },
           { 'source' => { 'pointer' => '/data/attributes/ordinal' }, 'detail' => "can't be blank" },
           { 'source' => { 'pointer' => '/data/attributes/ordinal' }, 'detail' => 'is not a number' }

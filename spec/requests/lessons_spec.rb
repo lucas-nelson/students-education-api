@@ -4,8 +4,8 @@ RSpec.describe 'Lessons', type: :request do
   # index
   describe 'GET /lessons' do
     it 'lists all the lessons' do
-      FactoryGirl.create :lesson
-      FactoryGirl.create :lesson, name: 'what to pack when you travel to the wall', ordinal: 2
+      FactoryGirl.create :lesson, :with_lesson_parts
+      FactoryGirl.create :lesson, :with_lesson_parts, name: 'what to pack when you travel to the wall', ordinal: 2
 
       get lessons_path
 
@@ -20,7 +20,7 @@ RSpec.describe 'Lessons', type: :request do
 
   # show
   describe 'GET /lessons/:1' do
-    let(:lesson) { FactoryGirl.create :lesson }
+    let(:lesson) { FactoryGirl.create :lesson, :with_lesson_parts }
 
     it 'returns the specified lesson' do
       get lesson_path(lesson)
@@ -77,7 +77,7 @@ RSpec.describe 'Lessons', type: :request do
   # update
   describe 'PUT /lesson/:id' do
     it 'updates the specified lesson' do
-      lesson = FactoryGirl.create :lesson
+      lesson = FactoryGirl.create :lesson, :with_lesson_parts
 
       put_lesson = { data: { type: 'lessons', id: lesson.id, attributes: { name: 'did I just lose my head' } } }
 
@@ -94,13 +94,13 @@ RSpec.describe 'Lessons', type: :request do
   # destroy
   describe 'DELETE /lesson/:id' do
     it 'deletes the specified lesson' do
-      lesson = FactoryGirl.create :lesson
+      lesson = FactoryGirl.create :lesson, :with_lesson_parts
 
       expect do
         delete lesson_path(lesson)
 
         expect(response).to have_http_status(:no_content)
-      end.to change(Lesson, :count).by(-1)
+      end.to change(Lesson, :count).by(-1).and change(LessonPart, :count).by(-3)
     end
   end
 end

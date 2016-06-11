@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160611042601) do
+ActiveRecord::Schema.define(version: 20160611050207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 20160611042601) do
     t.integer  "ordinal",                null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.integer  "lesson_id",              null: false
+    t.index ["lesson_id", "ordinal"], name: "index_lesson_parts_on_lesson_id_and_ordinal", unique: true, using: :btree
+    t.index ["lesson_id"], name: "index_lesson_parts_on_lesson_id", using: :btree
   end
 
   create_table "lessons", force: :cascade do |t|
@@ -38,4 +41,5 @@ ActiveRecord::Schema.define(version: 20160611042601) do
     t.index ["email"], name: "index_students_on_email", unique: true, using: :btree
   end
 
+  add_foreign_key "lesson_parts", "lessons"
 end

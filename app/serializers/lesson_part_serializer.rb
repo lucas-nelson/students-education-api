@@ -1,3 +1,3 @@
 class LessonPartSerializer < ActiveModel::Serializer # :nodoc:
-  attributes :id, :name, :ordinal
+  attributes :id, :lesson_id, :name, :ordinal
 end
