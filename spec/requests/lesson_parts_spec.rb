@@ -110,5 +110,15 @@ RSpec.describe 'LessonPartParts', type: :request do
         expect(response).to have_http_status(:no_content)
       end.to change(LessonPart, :count).by(-1)
     end
+
+    it 'deletes completed lesson parts too' do
+      lesson_part = FactoryGirl.create :lesson_part, :with_students
+
+      expect do
+        delete lesson_part_path(lesson_part)
+
+        expect(response).to have_http_status(:no_content)
+      end.to change(CompletedLessonPart, :count).by(-1)
+    end
   end
 end

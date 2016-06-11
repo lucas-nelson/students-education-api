@@ -1,5 +1,8 @@
 # models a part of a lesson that a student can complete
 class LessonPart < ApplicationRecord
+  has_many :completed_lesson_parts, dependent: :destroy, inverse_of: :lesson_part
+  has_many :students, through: :completed_lesson_parts
+
   belongs_to :lesson, inverse_of: :lesson_parts, touch: true
 
   validates :name, length: { maximum: 255 }, presence: true
