@@ -1,7 +1,13 @@
 source 'https://rubygems.org'
 
+ruby '2.3.1'
+
 # ActiveModel::Serializers allows you to generate your JSON in an object-oriented and convention-driven manner.
 gem 'active_model_serializers', '~> 0.10.0'
+# Faker, a port of Data::Faker from Perl, is used to easily generate fake data: names, addresses, phone numbers, etc.
+# Need this in the production gems for now to support demostrating with data
+# in production
+gem 'faker', '~> 1.6', '>= 1.6.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '>= 5.0.0.rc1', '< 5.1'
 # Use postgresql as the database for Active Record
@@ -42,8 +48,6 @@ group :development, :test do
 end
 
 group :development do
-  # Faker, a port of Data::Faker from Perl, is used to easily generate fake data: names, addresses, phone numbers, etc.
-  gem 'faker', '~> 1.6', '>= 1.6.3'
   # Guard is a command line tool to easily handle events on file system modifications.
   gem 'guard', '~> 2.14'
   # Guard::RSpec automatically run your specs (much like autotest).

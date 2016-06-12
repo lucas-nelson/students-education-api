@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # safety valve
-raise 'can only seed in development' unless Rails.env.development?
+raise ActiveRecord::ProtectedEnvironmentError unless Rails.env.development? || ENV['DISABLE_DATABASE_ENVIRONMENT_CHECK']
 
 # get the first N lesson parts by lesson.ordinal and lesson_part.ordinal
 # this is used to set the completion for a student between 0 and 299 lesson
