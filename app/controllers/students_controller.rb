@@ -21,7 +21,7 @@ class StudentsController < ApplicationController
   end
 
   def show
-    render json: @student, include: 'lesson_parts'
+    render json: @student
   end
 
   def update

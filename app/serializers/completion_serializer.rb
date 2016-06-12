@@ -1,5 +1,6 @@
 class CompletionSerializer < ActiveModel::Serializer # :nodoc:
   attributes :id
-  has_one :lesson_part
-  has_one :student
+
+  belongs_to :lesson_part
+  belongs_to :student
 end
