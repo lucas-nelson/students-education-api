@@ -79,8 +79,10 @@ From the problem description, it would seem obvious to model resources / tables 
 And some relationships:
 * `Teacher` has many `SchoolClass`
 * `SchoolClass` has many `Student`
-* `SchoolClass` has many `Lesson`
-* `Lesson` has many `LessonPart`
+* `SchoolClass` has many `Lesson` (100 of them)
+* `Lesson` has many `LessonPart` (3 of them)
+* `Student` has many `LessonPart` (through `Completion`)
+* `LessonPart` has many `Student` (through `Completion`)
 
 To track student's progress there will be a join table between `Student` and `LessonPart` (called
 `Completion`).
@@ -89,3 +91,46 @@ The usual restful-style actions for each of those resources should be supported.
 
 Completing the next part of a lesson can be done by creating a Completion model/record. Validation can be
 added there to check for the completion of all 'prior' parts.
+
+### Considerations
+
+#### Experience concerns at the start of this work
+
+* short on using RSpec, first time using it for my own projects (have used MiniTest up till now)
+* first time using Rails 5
+* first time using the new API-style application
+* first time dealing with the json-api spec
+* first time writing an API to serve an EmberJS client
+
+#### LessonPart
+
+It may be overkill to model the `Completion` as a separate resource. The simpler solution would be to have an `integer`
+column (values 1, 2, or 3 probably behind an enum) or three `boolean` columns on the `Lesson` resource that get set
+as the lesson parts become completed. But:
+
+1. I wanted to challenge myself to deal with a `has_many ... :through` relationship in RSpec, and
+2. I like the `Completion` having a name and possibly some other attributes could be added if this were a real-world
+   problem.
+
+##### REST-ful controllers for many-to-many relations in an API world
+
+The implementation of the many-to-many relationship (`Student` <-> `LessonPart`) does not follow the typical Rails
+convention of using `accepts_nested_attributes_for` in the model and having the controller go through some jui-jitsu
+to mutate the join table records. I don't want to overload the concept of 'updating a student' (or 'creating a
+student') to also handle managing the `LessonPart` completions.
+
+Given this is an API-only application it made sense to keep the API 'clean'. Separating out the association actions
+into their own controllers was the solution. Further splitting that association controller in two, so the actions
+dealing with creating and listed were nested under the students resource, gained additional semantic value and
+simplicity. The final routes model the concept of 'completing a lesson':
+
+* `GET /students/101/completions` - show all completions for student #101
+* `POST /students/101/completions` (providing a `LessonPart.id` in the post params) - complete a lesson part for
+  student #101
+* `GET /completions/987` - show the `Student` and `LessonPart` for the specific completion
+* `DELETE /completions/987` - un-complete the LessonPart for the Student in that specific completion
+
+Should, one day, there be a need to work on the completions from the `LessonPart` side (e.g. in the context of a
+`LessonPart` adding a `Student` completing it), the extra controller to do that (mimicking
+`Students::StudentsCompletionsController`) would slot right into the design. For now, I'm sticking to a
+`Student`-centric view of the actions.
