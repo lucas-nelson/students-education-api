@@ -83,9 +83,9 @@ And some relationships:
 * `Lesson` has many `LessonPart`
 
 To track student's progress there will be a join table between `Student` and `LessonPart` (called
-`CompletedLessonPart`).
+`Completion`).
 
 The usual restful-style actions for each of those resources should be supported.
 
-Completing the next part of a lesson can be done by creating a CompletedLessonPart model/record. Validation can be
+Completing the next part of a lesson can be done by creating a Completion model/record. Validation can be
 added there to check for the completion of all 'prior' parts.

@@ -118,7 +118,7 @@ RSpec.describe 'LessonPartParts', type: :request do
         delete lesson_part_path(lesson_part)
 
         expect(response).to have_http_status(:no_content)
-      end.to change(CompletedLessonPart, :count).by(-1)
+      end.to change(Completion, :count).by(-1)
     end
   end
 end

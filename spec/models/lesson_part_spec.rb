@@ -4,8 +4,8 @@ RSpec.describe LessonPart, type: :model do
   # need to create a model here that's valid so the validate_uniqueness_of test below will work
   subject { FactoryGirl.create :lesson_part }
 
-  it { should respond_to :completed_lesson_parts }
-  it { should have_many(:completed_lesson_parts).dependent(:destroy).inverse_of(:lesson_part) }
+  it { should respond_to :completions }
+  it { should have_many(:completions).dependent(:destroy).inverse_of(:lesson_part) }
 
   it { should respond_to :lesson }
   it { should belong_to(:lesson).dependent(false).inverse_of(:lesson_parts).touch(true) }
@@ -21,5 +21,5 @@ RSpec.describe LessonPart, type: :model do
   it { should validate_uniqueness_of(:ordinal).scoped_to(:lesson_id) }
 
   it { should respond_to :students }
-  it { should have_many(:students).through(:completed_lesson_parts) }
+  it { should have_many(:students).through(:completions) }
 end

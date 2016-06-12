@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :completed_lesson_part do
+  factory :completion do
     lesson_part
     student
   end
