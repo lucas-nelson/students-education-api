@@ -42,6 +42,8 @@ group :development, :test do
 end
 
 group :development do
+  # Faker, a port of Data::Faker from Perl, is used to easily generate fake data: names, addresses, phone numbers, etc.
+  gem 'faker', '~> 1.6', '>= 1.6.3'
   # Guard is a command line tool to easily handle events on file system modifications.
   gem 'guard', '~> 2.14'
   # Guard::RSpec automatically run your specs (much like autotest).
