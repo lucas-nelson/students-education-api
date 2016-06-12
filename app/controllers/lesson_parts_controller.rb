@@ -22,7 +22,7 @@ class LessonPartsController < ApplicationController
   end
 
   def show
-    render json: @lesson_part
+    render json: @lesson_part, serializer: LessonPartWithAssociationsSerializer
   end
 
   def update

@@ -120,15 +120,14 @@ to mutate the join table records. I don't want to overload the concept of 'updat
 student') to also handle managing the `LessonPart` completions.
 
 Given this is an API-only application it made sense to keep the API 'clean'. Separating out the association actions
-into their own controllers was the solution. Further splitting that association controller in two, so the actions
-dealing with creating and listed were nested under the students resource, gained additional semantic value and
-simplicity. The final routes model the concept of 'completing a lesson':
+into their own controllers was the solution. The routes model the concept of 'completing a lesson':
 
-* `GET /students/101/completions` - show all completions for student #101
-* `POST /students/101/completions` (providing a `LessonPart.id` in the post params) - complete a lesson part for
-  student #101
-* `GET /completions/987` - show the `Student` and `LessonPart` for the specific completion
-* `DELETE /completions/987` - un-complete the LessonPart for the Student in that specific completion
+* `GET /students/101/completed_lesson_parts` - show all completions for student #101
+* `POST /students/101/completed_lesson_parts` (providing a `lesson_part_id` in the post params) - complete a lesson
+  part for student #101
+* `GET /students/101/completed_lesson_parts/2` - at the moment, this returns the sames result as `/lesson_parts/2`,
+  it's going to be low value, but it should 404 if the lesson part has not been completed by this student
+* `DELETE /students/101/completed_lesson_parts/2` - un-complete the lesson part for the student
 
 Should, one day, there be a need to work on the completions from the `LessonPart` side (e.g. in the context of a
 `LessonPart` adding a `Student` completing it), the extra controller to do that (mimicking

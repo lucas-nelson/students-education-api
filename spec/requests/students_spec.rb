@@ -31,17 +31,6 @@ RSpec.describe 'Students', type: :request do
 
       expect(body.fetch('data').fetch('attributes').fetch('name')).to eq 'Arya Stark'
     end
-
-    it 'includes completed lesson parts in order' do
-      get student_path(FactoryGirl.create(:student, :with_lesson_parts))
-
-      expect(response).to have_http_status(:success)
-
-      body = JSON.parse(response.body)
-
-      expect(body.fetch('included').select { |i| i.fetch('type') == 'lesson-parts' }.size).to eq 6
-      expect(body.fetch('included').map { |i| i.fetch('attributes').fetch('ordinal') }).to eql([1, 2, 3, 1, 2, 3])
-    end
   end
 
   # create

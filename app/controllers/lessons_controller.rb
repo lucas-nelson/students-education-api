@@ -21,7 +21,7 @@ class LessonsController < ApplicationController
   end
 
   def show
-    render json: @lesson
+    render json: @lesson, include: :lesson_parts, serializer: LessonWithAssociationsSerializer
   end
 
   def update
