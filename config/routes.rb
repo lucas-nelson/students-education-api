@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :completions, only: [:destroy, :show]
   resources :lesson_parts
   resources :lessons
+  resources :school_classes
   resources :students do
     resources :completed_lesson_parts, module: :students, only: [:create, :destroy, :index, :show]
   end

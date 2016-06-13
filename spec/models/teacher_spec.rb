@@ -15,5 +15,8 @@ RSpec.describe Teacher, type: :model do
     it { should respond_to :name }
     it { should validate_length_of(:name).is_at_most(255) }
     it { should validate_presence_of :name }
+
+    it { should respond_to :school_classes }
+    it { should have_many(:school_classes).dependent(:nullify).inverse_of(:teacher) }
   end
 end
