@@ -50,7 +50,6 @@ RSpec.describe 'LessonPartParts', type: :request do
         body = JSON.parse(response.body)
         attributes = body.fetch('data').fetch('attributes')
 
-        expect(attributes.fetch('lesson-id')).to eq lesson.id
         expect(attributes.fetch('name')).to eq "don't upset the queen!"
         expect(attributes.fetch('ordinal')).to eq 2
       end.to change(LessonPart, :count).by 1

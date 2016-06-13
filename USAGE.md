@@ -28,18 +28,15 @@ Result:
 >                                                       {"id":"3","type":"lesson-parts"}]}}},
 >      "included":[{"id":"1",
 >                   "type":"lesson-parts",
->                   "attributes":{"lesson-id":1,
->                                 "name":"1. Sint confero absorbeo tepesco chirographum",
+>                   "attributes":{"name":"1. Sint confero absorbeo tepesco chirographum",
 >                                 "ordinal":1}},
 >                  {"id":"2",
 >                   "type":"lesson-parts",
->                   "attributes":{"lesson-id":1,
->                                 "name":"2. Aequus taceo voluptatum celebrer surgo",
+>                   "attributes":{"name":"2. Aequus taceo voluptatum celebrer surgo",
 >                                 "ordinal":2}},
 >                  {"id":"3",
 >                   "type":"lesson-parts",
->                   "attributes":{"lesson-id":1,
->                                 "name":"3. Textus ciminatio surculus vorago sordeo",
+>                   "attributes":{"name":"3. Textus ciminatio surculus vorago sordeo",
 >                                 "ordinal":3}}]}
 
 ### Students#show
@@ -89,8 +86,7 @@ Result:
 
 >     {"data":[{"id":"1",
 >               "type":"lesson-parts",
->               "attributes":{"lesson-id":1,
->                             "name":"1. Sint confero absorbeo tepesco chirographum",
+>               "attributes":{"name":"1. Sint confero absorbeo tepesco chirographum",
 >                             "ordinal":1}}]}
 
 #### Complete more lesson parts
@@ -126,18 +122,15 @@ Result:
 
 >     {"data":[{"id":"1",
 >               "type":"lesson-parts",
->               "attributes":{"lesson-id":1,
->                             "name":"1. Sint confero absorbeo tepesco chirographum",
+>               "attributes":{"name":"1. Sint confero absorbeo tepesco chirographum",
 >                             "ordinal":1}},
 >              {"id":"2",
 >               "type":"lesson-parts",
->               "attributes":{"lesson-id":1,
->                             "name":"2. Aequus taceo voluptatum celebrer surgo",
+>               "attributes":{"name":"2. Aequus taceo voluptatum celebrer surgo",
 >                             "ordinal":2}},
 >              {"id":"3",
 >               "type":"lesson-parts",
->               "attributes":{"lesson-id":1,
->                             "name":"3. Textus ciminatio surculus vorago sordeo",
+>               "attributes":{"name":"3. Textus ciminatio surculus vorago sordeo",
 >                             "ordinal":3}}]}
 
 ### Students::CompletedLessonParts#destroy
@@ -161,13 +154,11 @@ Result:
 
 >     {"data":[{"id":"1",
 >               "type":"lesson-parts",
->               "attributes":{"lesson-id":1,
->                             "name":"1. Sint confero absorbeo tepesco chirographum",
+>               "attributes":{"name":"1. Sint confero absorbeo tepesco chirographum",
 >                             "ordinal":1}},
 >               {"id":"2",
 >               "type":"lesson-parts",
->               "attributes":{"lesson-id":1,
->                             "name":"2. Aequus taceo voluptatum celebrer surgo",
+>               "attributes":{"name":"2. Aequus taceo voluptatum celebrer surgo",
 >                             "ordinal":2}}]}
 
 Remove the other completions to return the database to it's initial state:
