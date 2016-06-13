@@ -92,6 +92,13 @@ And some relationships:
 * `Student` has many `LessonPart` (through `Completion`)
 * `LessonPart` has many `Student` (through `Completion`)
 
+For now, to keep things simple, I am going to assume that a student is only enrolled in a single class. This is area
+for enhancement later on: an `Enrolment` model to join `Student` and `SchoolClass` (`has_many ... through:`).
+
+A possible enhancement is to being `Student` and `Teacher` closer with single-table-inheritance to DRY up the
+models/schema. Whether it's worth doing that is somewhat debatable. It depends on how many common attributes and
+much common behaviour the two models end up having.
+
 To track student's progress there will be a join table between `Student` and `LessonPart` (called
 `Completion`).
 

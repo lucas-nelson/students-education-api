@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :students do
     resources :completed_lesson_parts, module: :students, only: [:create, :destroy, :index, :show]
   end
+  resources :teachers
 end
