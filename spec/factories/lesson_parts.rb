@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :lesson_part do
     lesson
-    name "don't upset the king"
+    sequence(:name) { |n| "lesson part #{n}" }
     sequence(:ordinal) { |n| n % 3 + 1 }
 
     trait :with_students do

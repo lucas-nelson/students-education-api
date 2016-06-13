@@ -4,8 +4,8 @@ RSpec.describe 'SchoolClasses', type: :request do
   # index
   describe 'GET /school_classes' do
     it 'lists all the school classes' do
-      first = FactoryGirl.create :school_class
-      FactoryGirl.create :school_class, name: '1B', teacher_id: first.teacher.id
+      FactoryGirl.create :school_class, name: 'KJ'
+      FactoryGirl.create :school_class, name: '1B'
 
       get school_classes_path
 
@@ -14,13 +14,13 @@ RSpec.describe 'SchoolClasses', type: :request do
       body = JSON.parse(response.body)
       names = body.fetch('data').map { |school_class| school_class.fetch('attributes').fetch('name') }
 
-      expect(names).to match_array(['Kindergarten (KJ)', '1B'])
+      expect(names).to match_array(%w(KJ 1B))
     end
   end
 
   # show
   describe 'GET /school_classes/:1' do
-    let(:school_class) { FactoryGirl.create :school_class }
+    let(:school_class) { FactoryGirl.create :school_class, name: 'KJ' }
 
     it 'returns the specified school_class' do
       get school_class_path(school_class)
@@ -29,7 +29,7 @@ RSpec.describe 'SchoolClasses', type: :request do
 
       body = JSON.parse(response.body)
 
-      expect(body.fetch('data').fetch('attributes').fetch('name')).to eq 'Kindergarten (KJ)'
+      expect(body.fetch('data').fetch('attributes').fetch('name')).to eq 'KJ'
     end
   end
 
@@ -76,9 +76,9 @@ RSpec.describe 'SchoolClasses', type: :request do
 
   # update
   describe 'PUT /school_class/:id' do
-    it 'updates the specified school_class' do
-      school_class = FactoryGirl.create :school_class
+    let(:school_class) { FactoryGirl.create :school_class }
 
+    it 'updates the specified school_class' do
       put_school_class = { data: { type: 'school_classes', id: school_class.id, attributes: { name: '1C' } } }
 
       put school_class_path(school_class),

@@ -4,7 +4,7 @@ RSpec.describe 'LessonPartParts', type: :request do
   # index
   describe 'GET /lesson_parts' do
     it 'lists all the lesson_parts' do
-      FactoryGirl.create :lesson_part
+      FactoryGirl.create :lesson_part, name: "don't upset the king", ordinal: 1
       FactoryGirl.create :lesson_part, name: "don't upset the queen!", ordinal: 2
 
       get lesson_parts_path
@@ -20,7 +20,7 @@ RSpec.describe 'LessonPartParts', type: :request do
 
   # show
   describe 'GET /lesson_parts/:1' do
-    let(:lesson_part) { FactoryGirl.create :lesson_part }
+    let(:lesson_part) { FactoryGirl.create :lesson_part, name: "don't upset the king", ordinal: 1 }
 
     it 'returns the specified lesson_part' do
       get lesson_part_path(lesson_part)
@@ -79,9 +79,9 @@ RSpec.describe 'LessonPartParts', type: :request do
 
   # update
   describe 'PUT /lesson_part/:id' do
-    it 'updates the specified lesson_part' do
-      lesson_part = FactoryGirl.create :lesson_part
+    let(:lesson_part) { FactoryGirl.create :lesson_part }
 
+    it 'updates the specified lesson_part' do
       put_lesson_part = { data: { type: 'lesson_parts',
                                   id: lesson_part.id,
                                   attributes: { name: "don't upset the queen!" } } }

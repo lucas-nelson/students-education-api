@@ -4,26 +4,25 @@ RSpec.describe 'Students', type: :request do
   # index
   describe 'GET /students' do
     it 'lists all the students' do
-      first = FactoryGirl.create :student
-      FactoryGirl.create :student,
-                         email: 'sansa@hotmail.com',
-                         name: 'Sansa Stark',
-                         school_class_id: first.school_class.id
+      FactoryGirl.create :student, email: 'arya@outlook.com', name: 'Arya Stark'
+      FactoryGirl.create :student, email: 'sansa@hotmail.com', name: 'Sansa Stark'
 
       get students_path
 
       expect(response).to have_http_status(:success)
 
       body = JSON.parse(response.body)
+      emails = body.fetch('data').map { |student| student.fetch('attributes').fetch('email') }
       names = body.fetch('data').map { |student| student.fetch('attributes').fetch('name') }
 
+      expect(emails).to match_array(['arya@outlook.com', 'sansa@hotmail.com'])
       expect(names).to match_array(['Arya Stark', 'Sansa Stark'])
     end
   end
 
   # show
   describe 'GET /students/:1' do
-    let(:student) { FactoryGirl.create :student }
+    let(:student) { FactoryGirl.create :student, email: 'arya@outlook.com', name: 'Arya Stark' }
 
     it 'returns the specified student' do
       get student_path(student)
@@ -31,8 +30,10 @@ RSpec.describe 'Students', type: :request do
       expect(response).to have_http_status(:success)
 
       body = JSON.parse(response.body)
+      attributes = body.fetch('data').fetch('attributes')
 
-      expect(body.fetch('data').fetch('attributes').fetch('name')).to eq 'Arya Stark'
+      expect(attributes.fetch('email')).to eq 'arya@outlook.com'
+      expect(attributes.fetch('name')).to eq 'Arya Stark'
     end
   end
 
@@ -83,9 +84,9 @@ RSpec.describe 'Students', type: :request do
 
   # update
   describe 'PUT /student/:id' do
-    it 'updates the specified student' do
-      student = FactoryGirl.create :student
+    let(:student) { FactoryGirl.create :student }
 
+    it 'updates the specified student' do
       put_student = { data: { type: 'students', id: student.id, attributes: { email: 'arya2@outlook.com' } } }
 
       put student_path(student), params: put_student.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }

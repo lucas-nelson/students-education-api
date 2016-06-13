@@ -4,8 +4,8 @@ RSpec.describe 'Lessons', type: :request do
   # index
   describe 'GET /lessons' do
     it 'lists all the lessons' do
-      FactoryGirl.create :lesson, :with_lesson_parts
-      FactoryGirl.create :lesson, :with_lesson_parts, name: 'what to pack when you travel to the wall', ordinal: 2
+      FactoryGirl.create :lesson, name: 'how not to lose your head', ordinal: 1
+      FactoryGirl.create :lesson, name: 'what to pack when you travel to the wall', ordinal: 2
 
       get lessons_path
 
@@ -20,7 +20,7 @@ RSpec.describe 'Lessons', type: :request do
 
   # show
   describe 'GET /lessons/:1' do
-    let(:lesson) { FactoryGirl.create :lesson, :with_lesson_parts }
+    let(:lesson) { FactoryGirl.create :lesson, name: 'how not to lose your head' }
 
     it 'returns the specified lesson' do
       get lesson_path(lesson)
@@ -76,9 +76,9 @@ RSpec.describe 'Lessons', type: :request do
 
   # update
   describe 'PUT /lesson/:id' do
-    it 'updates the specified lesson' do
-      lesson = FactoryGirl.create :lesson, :with_lesson_parts
+    let(:lesson) { FactoryGirl.create :lesson }
 
+    it 'updates the specified lesson' do
       put_lesson = { data: { type: 'lessons', id: lesson.id, attributes: { name: 'did I just lose my head' } } }
 
       put lesson_path(lesson), params: put_lesson.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }

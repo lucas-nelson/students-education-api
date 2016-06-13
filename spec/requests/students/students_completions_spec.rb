@@ -51,7 +51,8 @@ RSpec.describe 'Students::CompletedLessonParts', type: :request do
 
   # show
   describe 'GET /students/:student_id/completed_lesson_parts/:id' do
-    let(:student) { FactoryGirl.create :student, :with_lesson_parts }
+    let(:lesson_part) { FactoryGirl.create :lesson_part, name: "don't upset the king", ordinal: 1 }
+    let(:student) { FactoryGirl.create :student, lesson_parts: [lesson_part] }
 
     it 'returns the specified completion' do
       get student_completed_lesson_part_path(student_id: student, id: student.lesson_parts.first)

@@ -4,7 +4,7 @@ RSpec.describe 'Teachers', type: :request do
   # index
   describe 'GET /teachers' do
     it 'lists all the teachers' do
-      FactoryGirl.create :teacher
+      FactoryGirl.create :teacher, email: 'edna_krabappel@example.org', name: 'Edna Krabappel'
       FactoryGirl.create :teacher, email: 'elizabeth_hoover@example.net', name: 'Elizabeth Hoover'
 
       get teachers_path
@@ -20,7 +20,7 @@ RSpec.describe 'Teachers', type: :request do
 
   # show
   describe 'GET /teachers/:1' do
-    let(:teacher) { FactoryGirl.create :teacher }
+    let(:teacher) { FactoryGirl.create :teacher, email: 'edna_krabappel@example.org', name: 'Edna Krabappel' }
 
     it 'returns the specified teacher' do
       get teacher_path(teacher)
@@ -76,9 +76,9 @@ RSpec.describe 'Teachers', type: :request do
 
   # update
   describe 'PUT /teacher/:id' do
-    it 'updates the specified teacher' do
-      teacher = FactoryGirl.create :teacher
+    let(:teacher) { FactoryGirl.create :teacher }
 
+    it 'updates the specified teacher' do
       put_teacher = { data: { type: 'teachers', id: teacher.id, attributes: { email: 'edna@example.com' } } }
 
       put teacher_path(teacher), params: put_teacher.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }

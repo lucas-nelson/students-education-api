@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :lesson do
-    name 'how not to lose your head'
+    name { "lesson #{ordinal}" }
     sequence(:ordinal) { |n| n }
 
     trait :with_lesson_parts do

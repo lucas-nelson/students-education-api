@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :student do
-    email 'arya@outlook.com'
-    name 'Arya Stark'
+    email { "#{name}@example.com" }
+    sequence(:name) { |n| "student-#{n}" }
     school_class
 
     trait :with_lesson_parts do
