@@ -39,8 +39,9 @@ class TeachersController < ApplicationController
     end
 
     def teacher_params
-      params.require(:data)
-            .require(:attributes)
-            .permit(:email, :name)
+      params
+        .require(:data)
+        .require(:attributes)
+        .permit(:email, :name)
     end
 end

@@ -39,8 +39,9 @@ class LessonsController < ApplicationController
     end
 
     def lesson_params
-      params.require(:data)
-            .require(:attributes)
-            .permit(:name, :ordinal)
+      params
+        .require(:data)
+        .require(:attributes)
+        .permit(:name, :ordinal)
     end
 end

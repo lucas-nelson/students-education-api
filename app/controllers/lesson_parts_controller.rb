@@ -40,8 +40,9 @@ class LessonPartsController < ApplicationController
     end
 
     def lesson_part_params
-      params.require(:data)
-            .require(:attributes)
-            .permit(:lesson_id, :name, :ordinal)
+      params
+        .require(:data)
+        .require(:attributes)
+        .permit(:lesson_id, :name, :ordinal)
     end
 end
