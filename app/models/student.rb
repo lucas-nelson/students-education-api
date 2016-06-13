@@ -16,5 +16,10 @@ class Student < ApplicationRecord
       joins('INNER JOIN "lessons" on "lessons"."id" = "lesson_parts"."lesson_id"')
         .order('"lessons"."ordinal", "lesson_parts"."ordinal"')
     end
+
+    # get all the students in all the classes taught by the given teacher
+    def taught_by(teacher)
+      joins(:school_class).where(school_classes: { teacher_id: teacher }).order(:name)
+    end
   end
 end
