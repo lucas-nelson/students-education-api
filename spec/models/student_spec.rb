@@ -49,4 +49,54 @@ RSpec.describe Student, type: :model do
       expect(taught_by).to be_empty
     end
   end
+
+  describe 'lesson part progress for all students taught by a teacher' do
+    let(:teacher) { FactoryGirl.create :teacher }
+    let(:school_class) { FactoryGirl.create :school_class, teacher: teacher }
+
+    it 'has a nil lesson_part when nothing has been completed' do
+      student = FactoryGirl.create :student, school_class: school_class
+
+      expect(Student.last_completions(teacher)).to eql([{ lesson_part: nil, student: student }])
+    end
+
+    it 'has the right lesson_part when the first lesson has been completed' do
+      student = FactoryGirl.create :student,
+                                   :with_lesson_parts,
+                                   lesson_parts_groups_count: 1,
+                                   school_class: school_class
+
+      expect(Student.last_completions(teacher)).to eql([{ lesson_part: student.lesson_parts.last, student: student }])
+    end
+
+    it 'has the right lesson_part when multiple lesson has been completed' do
+      student = FactoryGirl.create :student,
+                                   :with_lesson_parts,
+                                   lesson_parts_groups_count: 4,
+                                   school_class: school_class
+
+      expect(Student.last_completions(teacher)).to eql([{ lesson_part: student.lesson_parts.last, student: student }])
+    end
+
+    it 'has the right lesson_parts when multiple students have completed nothing' do
+      students = FactoryGirl.create_list :student, 5, school_class: school_class
+      expected = students.map { |s| { lesson_part: nil, student: s } }
+
+      expect(Student.last_completions(teacher)).to eql(expected)
+    end
+
+    it 'has the right lesson_parts when multiple students have completed a mixture of lesson parts' do
+      students = []
+      5.times do |i|
+        students << FactoryGirl.create(:student,
+                                       :with_lesson_parts,
+                                       lesson_parts_groups_count: i,
+                                       school_class: school_class)
+      end
+
+      expected = students.map { |s| { lesson_part: s.lesson_parts.last, student: s } }
+
+      expect(Student.last_completions(teacher)).to eql(expected)
+    end
+  end
 end
