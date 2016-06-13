@@ -2,7 +2,7 @@
 class SchoolClass < ApplicationRecord
   belongs_to :teacher, inverse_of: :school_classes, touch: true
 
-  has_many :lessons, inverse_of: :school_class, dependent: :nullify
+  has_many :lessons, -> { order(:ordinal) }, inverse_of: :school_class, dependent: :nullify
   has_many :students, inverse_of: :school_class, dependent: :nullify
 
   validates :name, length: { maximum: 255 }, presence: true
