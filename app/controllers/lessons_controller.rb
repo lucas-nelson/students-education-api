@@ -42,6 +42,6 @@ class LessonsController < ApplicationController
       params
         .require(:data)
         .require(:attributes)
-        .permit(:name, :ordinal)
+        .permit(:name, :ordinal, :school_class_id)
     end
 end

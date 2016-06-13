@@ -36,8 +36,11 @@ RSpec.describe 'Lessons', type: :request do
   # create
   describe 'POST /lessons' do
     it 'creates the specified lesson' do
+      school_class = FactoryGirl.create :school_class
+
       lesson = { data: { type: 'lessons', attributes: { name: 'what to pack when you travel to the wall',
-                                                        ordinal: 2 } } }
+                                                        ordinal: 2,
+                                                        school_class_id: school_class.id } } }
 
       expect do
         post lessons_path, params: lesson.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }
@@ -66,7 +69,8 @@ RSpec.describe 'Lessons', type: :request do
         expected = [
           { 'source' => { 'pointer' => '/data/attributes/name' },    'detail' => "can't be blank" },
           { 'source' => { 'pointer' => '/data/attributes/ordinal' }, 'detail' => "can't be blank" },
-          { 'source' => { 'pointer' => '/data/attributes/ordinal' }, 'detail' => 'is not a number' }
+          { 'source' => { 'pointer' => '/data/attributes/ordinal' }, 'detail' => 'is not a number' },
+          { 'source' => { 'pointer' => '/data/attributes/school-class' }, 'detail' => 'must exist' }
         ]
 
         expect(errors).to eql(expected)

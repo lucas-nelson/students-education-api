@@ -31,7 +31,10 @@ SchoolClass.create!(name: 'Kindergarten (KJ)', teacher: Teacher.first)
 # lessons and lesson_parts
 100.times do |idx|
   lesson_parts = Array.new(3) { |lp_idx| LessonPart.new(name: "#{lp_idx + 1}. #{words(5)}", ordinal: lp_idx + 1) }
-  Lesson.create!(lesson_parts: lesson_parts, name: "#{idx + 1}. #{words(3)}", ordinal: idx + 1)
+  Lesson.create!(lesson_parts: lesson_parts,
+                 name: "#{idx + 1}. #{words(3)}",
+                 ordinal: idx + 1,
+                 school_class: SchoolClass.first)
 end
 
 # students and completions

@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :lesson do
     name { "lesson #{ordinal}" }
     sequence(:ordinal) { |n| n }
+    school_class
 
     trait :with_lesson_parts do
       transient do
