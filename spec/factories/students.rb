@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :student do
     email 'arya@outlook.com'
     name 'Arya Stark'
+    school_class
 
     trait :with_lesson_parts do
       transient do

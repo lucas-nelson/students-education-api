@@ -1,5 +1,7 @@
 # models a student attending a class, completing lessons
 class Student < ApplicationRecord
+  belongs_to :school_class, inverse_of: :students, touch: true
+
   has_many :completions, dependent: :destroy, inverse_of: :student
   has_many :lesson_parts, -> { Student.order_by_lesson_ordinal }, through: :completions
 

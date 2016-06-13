@@ -22,6 +22,12 @@ def words(num)
   Faker::Lorem.words(num, true).join(' ').humanize
 end
 
+# teachers
+Teacher.create!(email: 'edna_krabappel@example.org', name: 'Edna Krabappel')
+
+# school_classes
+SchoolClass.create!(name: 'Kindergarten (KJ)', teacher: Teacher.first)
+
 # lessons and lesson_parts
 100.times do |idx|
   lesson_parts = Array.new(3) { |lp_idx| LessonPart.new(name: "#{lp_idx + 1}. #{words(5)}", ordinal: lp_idx + 1) }
@@ -29,13 +35,19 @@ end
 end
 
 # students and completions
-Student.create!(email: 'bart_simpson@example.net', name: 'Bart Simpson')
-Student.create!(email: 'lisa_simpson@example.net', name: 'Lisa Simpson', lesson_parts: LessonPart.all)
+Student.create!(email: 'bart_simpson@example.net', name: 'Bart Simpson', school_class: SchoolClass.first)
+Student.create!(email: 'lisa_simpson@example.net',
+                lesson_parts: LessonPart.all,
+                name: 'Lisa Simpson',
+                school_class: SchoolClass.first)
 
 30.times do
   first_name = Faker::Name.first_name
   last_name = Faker::Name.last_name
   email = Faker::Internet.safe_email("#{first_name}_#{last_name}")
 
-  Student.create!(email: email, name: "#{first_name} #{last_name}", lesson_parts: random_completion)
+  Student.create!(email: email,
+                  lesson_parts: random_completion,
+                  name: "#{first_name} #{last_name}",
+                  school_class: SchoolClass.first)
 end

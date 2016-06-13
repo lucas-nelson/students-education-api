@@ -15,5 +15,9 @@ RSpec.describe Student, type: :model do
     it { should respond_to :name }
     it { should validate_length_of(:name).is_at_most(255) }
     it { should validate_presence_of :name }
+
+    it { should respond_to :school_class }
+    it { should belong_to(:school_class).dependent(false).inverse_of(:students).touch(true) }
+    it { should validate_presence_of(:school_class).with_message('must exist') }
   end
 end

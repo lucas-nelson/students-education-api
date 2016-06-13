@@ -4,8 +4,11 @@ RSpec.describe 'Students', type: :request do
   # index
   describe 'GET /students' do
     it 'lists all the students' do
-      FactoryGirl.create :student
-      FactoryGirl.create :student, email: 'sansa@hotmail.com', name: 'Sansa Stark'
+      first = FactoryGirl.create :student
+      FactoryGirl.create :student,
+                         email: 'sansa@hotmail.com',
+                         name: 'Sansa Stark',
+                         school_class_id: first.school_class.id
 
       get students_path
 
@@ -36,7 +39,11 @@ RSpec.describe 'Students', type: :request do
   # create
   describe 'POST /students' do
     it 'creates the specified student' do
-      student = { data: { type: 'students', attributes: { email: 'sansa@hotmail.com', name: 'Sansa Stark' } } }
+      school_class = FactoryGirl.create :school_class
+
+      student = { data: { type: 'students', attributes: { email: 'sansa@hotmail.com',
+                                                          name: 'Sansa Stark',
+                                                          school_class_id: school_class.id } } }
 
       expect do
         post students_path, params: student.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }
@@ -63,9 +70,10 @@ RSpec.describe 'Students', type: :request do
         errors = errors.sort_by { |error| [error.dig('source', 'pointer'), error['detail']] }
 
         expected = [
-          { 'source' => { 'pointer' => '/data/attributes/email' }, 'detail' => "can't be blank" },
-          { 'source' => { 'pointer' => '/data/attributes/email' }, 'detail' => 'is invalid' },
-          { 'source' => { 'pointer' => '/data/attributes/name' },  'detail' => "can't be blank" }
+          { 'source' => { 'pointer' => '/data/attributes/email' },        'detail' => "can't be blank" },
+          { 'source' => { 'pointer' => '/data/attributes/email' },        'detail' => 'is invalid' },
+          { 'source' => { 'pointer' => '/data/attributes/name' },         'detail' => "can't be blank" },
+          { 'source' => { 'pointer' => '/data/attributes/school-class' }, 'detail' => 'must exist' }
         ]
 
         expect(errors).to eql(expected)
