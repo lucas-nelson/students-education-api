@@ -153,7 +153,7 @@ Result:
 
 >     status: 204
 
-Observe the studen now has only completed two lesson parts:
+Observe the student now has only completed two lesson parts:
 
     curl "${URL_BASE}/students/1/completed_lesson_parts"
 
