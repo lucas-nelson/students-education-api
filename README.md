@@ -141,3 +141,26 @@ Should, one day, there be a need to work on the completions from the `LessonPart
 `LessonPart` adding a `Student` completing it), the extra controller to do that (mimicking
 `Students::StudentsCompletionsController`) would slot right into the design. For now, I'm sticking to a
 `Student`-centric view of the actions.
+
+### Learnings
+
+#### RSpec
+
+Perhaps unsurprisingly RSpec and Minitest are not fundamentally different in their capability or how they go about
+doing their work. There is more that is similar than different. Obviously the syntax is different, and RSpec's DSL
+does feel a little ... quirky at times. Aside from needing to lookup the RSpec API a bit to find the "right" bit of
+the DSL to use, it felt much the same in terms of development efficiency.
+
+#### Rails 5 and API-mode
+
+It does not feel much different to Rails 4. The API mode is cool and `active_model_serializers` does a good job.
+
+A few niggles setting up for a Heroku deploy are gone (no more `rails_12factor` gem,yay!).
+
+#### json-api
+
+It still feels a bit new and has some rough edges. Support in Rails is ... evolving and there's been a few issues to
+workaround.
+
+Having said that, it feels nice to have an opinionated specification covering the basic structure of the JSON
+messages. [Bike sheds indeed](https://en.wikipedia.org/wiki/Law_of_triviality)!
