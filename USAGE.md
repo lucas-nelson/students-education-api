@@ -91,7 +91,7 @@ Result:
 
 #### Complete more lesson parts
 
-Complete _2. Aequus taceo voluptatum celebrer surgo_ and _3. Textus ciminatio surculus vorago sordeo_:
+Complete  and _3. Textus ciminatio surculus vorago sordeo_:
 
     curl \
       -H "Content-Type: application/vnd.api+json" \
@@ -302,3 +302,24 @@ Result: (suppressed in the middle for brevity):
 >                   "type":"lessons",
 >                   "attributes":{"name":"84. Timidus fuga varietas",
 >                                 "ordinal":84}}]}
+
+## Part 3
+
+### Students::CompletedLessonParts#create
+
+Attempt to have _Bart Simpson_ complete _2. Aequus taceo voluptatum celebrer surgo_ before completing the first
+lesson part:
+
+    curl \
+      -H "Content-Type: application/vnd.api+json" \
+      -H "Accept: application/vnd.api+json" \
+      -w '\nstatus: %{http_code}\n' \
+      -X POST \
+      -d '{"data":{"type":"completions","attributes":{"lesson_part_id":1}}}' \
+      "${URL_BASE}/students/2/completed_lesson_parts"
+
+Response:
+
+>     {"errors":[{"source":{"pointer":"/data/attributes/lesson-part"},
+>                 "detail":"must have completed preceding lesson part"}]}
+>      status: 422

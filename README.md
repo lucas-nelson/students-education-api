@@ -37,6 +37,8 @@ Calculating progress
    part number in sequence e.g.
    L1 P1, L1 P2, L1 P3, L2 P1, L2 P2 etc
 
+See the results in [USAGE.md](USAGE.md#part-3)
+
 #### Seeing the results - curl
 
 There is an instance of this application running at
