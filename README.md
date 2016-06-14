@@ -27,6 +27,8 @@ Teachers have classes containing number of students.
 1.  Add a teacher model that is related to students
 2.  Create a reports page for a teacher to view progress all of their students.
 
+See the results in [USAGE.md](USAGE.md#part-2)
+
 #### Part 3
 
 Calculating progress

@@ -54,7 +54,7 @@ Result:
 
 ### Students::CompletedLessonParts#index
 
-Observe that the student has not completed any lesson parts:
+Observe that _Bart Simpson_ has not completed any lesson parts:
 
     curl "${URL_BASE}/students/1/completed_lesson_parts"
 
@@ -64,7 +64,7 @@ Result:
 
 ### Students::CompletedLessonParts#create
 
-Have that student complete the first part of the first lesson:
+Have _Bart Simpson_ complete _1. Sint confero absorbeo tepesco chirographum_:
 
     curl \
       -H "Content-Type: application/vnd.api+json" \
@@ -78,7 +78,7 @@ Result:
 
 >     status: 204
 
-Observe that the student has now completed one lesson part:
+Observe that _Bart Simpson_ has now completed _1. Sint confero absorbeo tepesco chirographum_:
 
     curl "${URL_BASE}/students/1/completed_lesson_parts"
 
@@ -91,7 +91,7 @@ Result:
 
 #### Complete more lesson parts
 
-Complete the second and third parts of the first lesson:
+Complete _2. Aequus taceo voluptatum celebrer surgo_ and _3. Textus ciminatio surculus vorago sordeo_:
 
     curl \
       -H "Content-Type: application/vnd.api+json" \
@@ -114,7 +114,7 @@ Result:
 >
 >     status: 204
 
-Observe that the student has now completed three lesson parts:
+Observe that _Bart Simpson_ has now completed all three lesson parts:
 
     curl "${URL_BASE}/students/1/completed_lesson_parts"
 
@@ -135,7 +135,7 @@ Result:
 
 ### Students::CompletedLessonParts#destroy
 
-Remove the completion for the third lesson:
+Remove the completion for the _3. Textus ciminatio surculus vorago sordeo_:
 
     curl \
       -w '\nstatus: %{http_code}\n' \
@@ -146,7 +146,7 @@ Result:
 
 >     status: 204
 
-Observe the student now has only completed two lesson parts:
+Observe that _Bart Simpson_ now has only completed two lesson parts:
 
     curl "${URL_BASE}/students/1/completed_lesson_parts"
 
@@ -178,10 +178,127 @@ Result:
 >
 >     status: 204
 
-Observe the student has no completed lesson parts now:
+Observe that _Bart Simpson_ has no completed lesson parts now:
 
     curl "${URL_BASE}/students/1/completed_lesson_parts"
 
 Result:
 
 >     {"data":[]}
+
+## Part 2
+
+### Teachers#show
+
+Observe the first teacher:
+
+    curl "${URL_BASE}/teachers/1"
+
+Result:
+
+>     {"data":{"id":"1",
+>              "type":"teachers",
+>              "attributes":{"name":"Edna Krabappel",
+>                            "email":"edna_krabappel@example.org"}}}
+
+### Teachers::TeachesStudents#index
+
+Observe a list of students taught by _Edna Krabappel_:
+
+    curl "${URL_BASE}/teachers/1/teaches_students"
+
+Result: (suppressed in the middle for brevity):
+
+>     {"data":[{"id":"33",
+>               "type":"students",
+>               "attributes":{"name":"Abe Braun",
+>                             "email":"abe_braun@example.com"}},
+>              {"id":"37",
+>               "type":"students",
+>               "attributes":{"name":"Amya Flatley",
+>                             "email":"amya_flatley@example.org"}},
+>              {"id":"36",
+>               "type":"students",
+>               "attributes":{"name":"Ana Metz",
+>                             "email":"ana_metz@example.org"}},
+>              …
+>              {"id":"39",
+>               "type":"students",
+>               "attributes":{"name":"Xzavier Schmitt",
+>                             "email":"xzavier_schmitt@example.net"}},
+>              {"id":"38",
+>               "type":"students",
+>               "attributes":{"name":"Yasmine Wolff",
+>                             "email":"yasmine_wolff@example.net"}}]}
+
+### Teachers::ProgressOfStudents#index
+
+Observe the progress of all the students taught by _Edna Krabappel_:
+
+    curl "${URL_BASE}/teachers/1/progress_of_students"
+
+Result: (suppressed in the middle for brevity):
+
+>     {"data":[{"id":"33-461",
+>               "type":"progress-of-students",
+>               "relationships":{"student":{"data":{"id":"33",
+>                                           "type":"students"}},
+>                                "lesson-part":{"data":{"id":"461",
+>                                                       "type":"lesson-parts"}}}},
+>              {"id":"37-329",
+>               "type":"progress-of-students",
+>               "relationships":{"student":{"data":{"id":"37",
+>                                                   "type":"students"}},
+>                                "lesson-part":{"data":{"id":"329",
+>                                               "type":"lesson-parts"}}}},
+>              …
+>              {"id":"38-552",
+>               "type":"progress-of-students",
+>               "relationships":{"student":{"data":{"id":"38",
+>                                           "type":"students"}},
+>                                "lesson-part":{"data":{"id":"552",
+>                                                       "type":"lesson-parts"}}}}],
+>      "included":[{"id":"33",
+>                   "type":"students",
+>                   "attributes":{"name":"Abe Braun",
+>                                 "email":"abe_braun@example.com"}},
+>                  {"id":"461",
+>                   "type":"lesson-parts",
+>                   "attributes":{"name":"2. Accipio commemoro bos ulciscor laudantium",
+>                                 "ordinal":2},
+>                   "relationships":{"lesson":{"data":{"id":"154",
+>                                                      "type":"lessons"}}}},
+>                  {"id":"154",
+>                   "type":"lessons",
+>                   "attributes":{"name":"54. Possimus copiose collum",
+>                                 "ordinal":54}},
+>                  {"id":"37",
+>                   "type":"students",
+>                   "attributes":{"name":"Amya Flatley",
+>                                 "email":"amya_flatley@example.org"}},
+>                  {"id":"329",
+>                   "type":"lesson-parts",
+>                   "attributes":{"name":"2. Nemo virtus termes delicate vilis",
+>                                 "ordinal":2},
+>                   "relationships":{"lesson":{"data":{"id":"110",
+>                                                      "type":"lessons"}}}},
+>                  {"id":"110",
+>                   "type":"lessons",
+>                   "attributes":{"name":"10. Admoveo sit coepi",
+>                                 "ordinal":10}},
+>                  …
+>                  {"id":"38",
+>                   "type":"students",
+>                   "attributes":{"name":"Yasmine Wolff",
+>                                 "email":"yasmine_wolff@example.net"}},
+>
+>                  {"id":"552",
+>                   "type":"lesson-parts",
+>                   "attributes":{"name":"3. Consuasor despirmatio depulso terebro demulceo",
+>                                 "ordinal":3},
+>                   "relationships":{"lesson":{"data":{"id":"184",
+>                                                      "type":"lessons"}}}},
+>                  {"id":"184",
+>                   "type":"lessons",
+>                   "attributes":{"name":"84. Timidus fuga varietas",
+>                                 "ordinal":84}}]}
