@@ -1,7 +1,7 @@
 module Teachers
   # Shows a how teachers relate to students
   class TeachesStudentsController < ApplicationController
-    before_action :set_student
+    before_action :set_teacher
 
     def index
       render json: Student.taught_by(@teacher)
@@ -9,7 +9,7 @@ module Teachers
 
     private
 
-      def set_student
+      def set_teacher
         @teacher = Teacher.find(params[:teacher_id])
       end
   end
