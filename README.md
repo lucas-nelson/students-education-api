@@ -162,9 +162,9 @@ the DSL to use, it felt much the same in terms of development efficiency.
 
 #### Rails 5 and API-mode
 
-It does not feel much different to Rails 4. The API mode is cool and `active_model_serializers` does a good job.
+It does not feel much different to Rails 4. The API mode is cool and helps in writing clean controllers.
 
-A few niggles setting up for a Heroku deploy are gone (no more `rails_12factor` gem,yay!).
+A few niggles setting up for a Heroku deploy are gone (no more `rails_12factor` gem, yay!).
 
 #### json-api
 
@@ -173,3 +173,9 @@ workaround.
 
 Having said that, it feels nice to have an opinionated specification covering the basic structure of the JSON
 messages. [Bike sheds indeed](https://en.wikipedia.org/wiki/Law_of_triviality)!
+
+##### After doing Part 2
+
+I was a bit harsh. The `active-model-serializers` gem that implements the json-api spec is good. It lacks
+documentation in few areas that makes it harder to work with than ideal. Once you work out the _right way_ to do
+something, the solution drops out neatly.
