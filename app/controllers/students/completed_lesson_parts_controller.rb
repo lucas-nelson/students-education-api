@@ -7,9 +7,8 @@ module Students
 
     def create
       @student.lesson_parts << lesson_part_from_data
-      return if @student.save
-
-      render_jsonapi_errors @student
+    rescue ActiveRecord::RecordInvalid => invalid
+      render_jsonapi_errors invalid.record
     end
 
     def destroy

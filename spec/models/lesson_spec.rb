@@ -17,4 +17,24 @@ RSpec.describe Lesson, type: :model do
     it { should belong_to(:school_class).dependent(false).inverse_of(:lessons).touch(true) }
     it { should validate_presence_of(:school_class).with_message('must exist') }
   end
+
+  describe 'preceding lessons' do
+    let(:lesson) { FactoryGirl.create :lesson }
+
+    it 'should be the preceding lesson in the same school class' do
+      second_lesson = FactoryGirl.create :lesson, school_class: lesson.school_class
+
+      expect(second_lesson.preceding).to eq lesson
+    end
+
+    it 'should be nil when there are no lessons' do
+      expect(lesson.preceding).to be_nil
+    end
+
+    it 'should ignore lessons from other classes' do
+      lesson_in_other_school_class = FactoryGirl.create :lesson
+
+      expect(lesson_in_other_school_class.preceding).to be_nil
+    end
+  end
 end

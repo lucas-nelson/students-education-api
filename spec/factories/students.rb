@@ -16,8 +16,7 @@ FactoryGirl.define do
         evaluator.lesson_parts_groups_count.times do
           lesson = create(:lesson)
           3.times do |idx|
-            # count the ordinal down here to help test the relation ordering
-            student.lesson_parts << create(:lesson_part, lesson: lesson, ordinal: 3 - idx)
+            student.lesson_parts << create(:lesson_part, lesson: lesson, ordinal: idx + 1)
           end
         end
       end

@@ -4,7 +4,7 @@ RSpec.describe 'Students::CompletedLessonParts', type: :request do
   # create
   describe 'POST /students/:student_id/completed_lesson_parts' do
     let(:student) { FactoryGirl.create :student }
-    let(:lesson_part) { FactoryGirl.create :lesson_part }
+    let(:lesson_part) { FactoryGirl.create :lesson_part, ordinal: 1 }
 
     it 'completes the lesson part for the student' do
       completed_lesson_part = { data: { type: 'lesson_parts',
@@ -17,6 +17,29 @@ RSpec.describe 'Students::CompletedLessonParts', type: :request do
 
         expect(response).to have_http_status(:no_content)
       end.to change(Completion, :count).by 1
+    end
+
+    it 'fails to complete skipping over a lesson part' do
+      newer_lesson_part = FactoryGirl.create :lesson_part, lesson: lesson_part.lesson, ordinal: 2
+      completed_lesson_part = { data: { type: 'lesson_parts',
+                                        attributes: { lesson_part_id: newer_lesson_part.id } } }
+
+      expect do
+        post student_completed_lesson_parts_path(student_id: student),
+             params: completed_lesson_part.to_json,
+             headers: { 'Content-Type': 'application/vnd.api+json' }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+
+        body = JSON.parse(response.body)
+
+        errors = body.fetch('errors')
+        expect(errors.size).to eq 1
+
+        expected = { 'source' => { 'pointer' => '/data/attributes/lesson-part' },
+                     'detail' => 'must have completed preceding lesson part' }
+        expect(errors.first).to eql expected
+      end.not_to change(Completion, :count)
     end
   end
 

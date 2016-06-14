@@ -22,4 +22,34 @@ RSpec.describe LessonPart, type: :model do
 
   it { should respond_to :students }
   it { should have_many(:students).through(:completions) }
+
+  describe 'preceding lesson parts' do
+    let(:lesson_part) { FactoryGirl.create :lesson_part }
+
+    it 'should be the preceding lesson part in the same lesson' do
+      second_lesson_part = FactoryGirl.create :lesson_part, lesson: lesson_part.lesson
+
+      expect(second_lesson_part.preceding).to eq lesson_part
+    end
+
+    it 'should be nil when there are no lesson parts' do
+      expect(lesson_part.preceding).to be_nil
+    end
+
+    it 'should ignore lesson parts from other lessons' do
+      lesson_parts_in_other_lessons = FactoryGirl.create :lesson_part
+
+      expect(lesson_parts_in_other_lessons.preceding).to be_nil
+    end
+
+    it 'should be from the preceding lesson' do
+      first_lesson = FactoryGirl.create(:lesson, ordinal: 1)
+      FactoryGirl.create_list(:lesson_part, 3, lesson: first_lesson)
+
+      second_lesson = FactoryGirl.create(:lesson, ordinal: 2, school_class: first_lesson.school_class)
+      first_part_second_lesson = FactoryGirl.create(:lesson_part, lesson: second_lesson, ordinal: 1)
+
+      expect(first_part_second_lesson.preceding).to eq first_lesson.lesson_parts.last
+    end
+  end
 end
